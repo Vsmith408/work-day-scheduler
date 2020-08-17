@@ -29,7 +29,6 @@ for (let i = 9; i <= 17; i++) {
   } else {
     tense = 'past'
   }
-  console.log({ startOfHour, withHour, endOfHour })
 
   form.className = `row time-block ${tense}`
 
@@ -55,9 +54,14 @@ for (let i = 9; i <= 17; i++) {
   form.appendChild(textArea)
   form.appendChild(btn)
 
+  textArea.addEventListener('keypress', () => {
+    icon.className = 'fas fa-unlock'
+  })
+
   form.addEventListener('submit', (e) => {
     e.preventDefault()
     localStorage.setItem(hourString, e.target[0].value)
+    icon.className = 'fas fa-lock'
   })
 
   root.appendChild(form)
