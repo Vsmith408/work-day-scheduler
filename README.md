@@ -6,4 +6,4 @@
 
 ## Screenshot of scheduler
 
-![Screenshot of work day scheduler](./assets/Scheduler-Screenshot.png)
+![Screenshot of work day scheduler](Scheduler-Screenshot.png)
