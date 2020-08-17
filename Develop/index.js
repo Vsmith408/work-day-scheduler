@@ -12,18 +12,36 @@ for (let i = 9; i <= 17; i++) {
   const day = today.getDate()
 
   const withHour = new Date(year, month, day, i)
+  const hourString = getHour(withHour)
 
-  const isPast = moment(withHour).isBefore(today)
   let form = document.createElement('form')
-  form.className = 'row time-block past'
+  let startOfHour = moment().startOf('hour')
+  let endOfHour = moment().endOf('hour')
+
+  let tense = ''
+  if (moment(withHour).isAfter(endOfHour)) {
+    tense = 'future'
+  } else if (
+    moment(withHour).isBetween(startOfHour, endOfHour) ||
+    moment(withHour).isSame(startOfHour)
+  ) {
+    tense = 'present'
+  } else {
+    tense = 'past'
+  }
+  console.log({ startOfHour, withHour, endOfHour })
+
+  form.className = `row time-block ${tense}`
 
   let hour = document.createElement('div')
   hour.className = 'col-1 hour'
-  hour.textContent = getHour(withHour)
+  hour.textContent = hourString
 
   let textArea = document.createElement('textarea')
   textArea.className = 'col-10'
   textArea.placeholder = 'Enter Event'
+
+  textArea.value = localStorage.getItem(hourString)
 
   let btn = document.createElement('button')
   btn.className = 'saveBtn col-1'
@@ -39,22 +57,8 @@ for (let i = 9; i <= 17; i++) {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault()
-
-    console.log(e.target[0].value)
+    localStorage.setItem(hourString, e.target[0].value)
   })
 
   root.appendChild(form)
-
-  // every iteration gets html rendered
-  /**
-    <form class="row time-block past">
-        <div class="col-1 hour">9AM</div>
-        <textarea name="textarea" placeholder="Past Event" aria-label="Past Event" class="col-10"></textarea>
-        <button class="saveBtn col-1" type="submit"><i class="fas fa-lock"></i></button>
-    </form>
-   */
-  // form gets on submit handler, prevent default
-  // on submit of form update object at time with textarea value, save to localsorage
-
-  console.log(getHour(withHour), formatDate(today))
 }
